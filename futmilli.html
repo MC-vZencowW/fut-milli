@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUT Milli — Calculateur</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+      radial-gradient(circle at 20% 20%, #252a35 0, transparent 35%),
+      radial-gradient(circle at 80% 80%, #161a22 0, transparent 40%),
+      #0d0f14;
+    color: white;
+  }
+
+  .app {
+    width: min(1050px, 92vw);
+    padding: 32px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 34px;
+  }
+
+  .logo {
+    font-size: clamp(34px, 6vw, 64px);
+    font-weight: 900;
+    letter-spacing: -3px;
+  }
+
+  .logo span { color: #f5c542; }
+
+  .subtitle {
+    margin-top: 8px;
+    color: #8f96a3;
+    font-size: 15px;
+  }
+
+  .calculator {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .card {
+    border: 1px solid #292e38;
+    background: rgba(20, 23, 30, .88);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  }
+
+  .label {
+    color: #969daa;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 14px;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  input {
+    width: 100%;
+    border: 2px solid #343a46;
+    outline: none;
+    background: #11141a;
+    color: white;
+    border-radius: 18px;
+    padding: 28px 64px 28px 22px;
+    font-size: 34px;
+    font-weight: 800;
+    transition: .2s;
+  }
+
+  input:focus {
+    border-color: #f5c542;
+    box-shadow: 0 0 0 4px rgba(245,197,66,.1);
+  }
+
+  .currency {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 25px;
+    font-weight: 800;
+    color: #f5c542;
+  }
+
+  .result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 210px;
+    background: linear-gradient(145deg, #1c2029, #13161c);
+  }
+
+  .result-value {
+    font-size: clamp(52px, 8vw, 86px);
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: -4px;
+    color: #f5c542;
+    word-break: break-word;
+  }
+
+  .multiplier {
+    margin-top: 14px;
+    color: #8f96a3;
+    font-size: 15px;
+  }
+
+  .multiplier strong { color: white; }
+
+  .info {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #686f7c;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 700px) {
+    .app { padding: 20px; }
+    .calculator { grid-template-columns: 1fr; }
+    .info { grid-column: auto; }
+    .card { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo">FUT <span>MILLI</span></div>
+      <div class="subtitle">Calcule instantanément le prix ×1,2</div>
+    </header>
+
+    <section class="calculator">
+      <div class="card">
+        <div class="label">Prix d'achat</div>
+        <div class="input-wrap">
+          <input id="price" type="number" min="0" step="1" placeholder="Ex. 100 000" inputmode="numeric" autofocus>
+          <span class="currency">🪙</span>
+        </div>
+      </div>
+
+      <div class="card result">
+        <div class="label">Prix FUT Milli</div>
+        <div class="result-value" id="result">0</div>
+        <div class="multiplier">Prix d'achat <strong>× 1,2</strong></div>
+      </div>
+
+      <div class="info">Entre le prix du joueur — le résultat se met à jour en temps réel.</div>
+    </section>
+  </main>
+
+<script>
+  const input = document.getElementById("price");
+  const result = document.getElementById("result");
+
+  function formatNumber(value) {
+    return new Intl.NumberFormat("fr-FR").format(value);
+  }
+
+  function calculate() {
+    const price = parseFloat(input.value);
+    const total = Number.isFinite(price) ? price * 1.2 : 0;
+    result.textContent = formatNumber(total);
+  }
+
+  input.addEventListener("input", calculate);
+</script>
+</body>
+</html>
